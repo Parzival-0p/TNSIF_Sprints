@@ -1,0 +1,92 @@
+<div class="container mt-4">
+  <form #orderForm="ngForm" (ngSubmit)="register(orderForm)">
+    <h4 class="display-6 text-center py-2">Order Management System</h4>
+    <div class="mb-3">
+      <label for="customerName">Customer Name</label>
+      <input id="customerName" required #customerName="ngModel" ngModel name="customerName" type="text" class="form-control" placeholder="Enter customer name">
+      <div *ngIf="customerName.invalid && customerName.touched">
+        <small class="text-danger" *ngIf="customerName.errors?.['required']">Required</small>
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label for="product">Product</label>
+      <input id="product" required #product="ngModel" ngModel name="product" type="text" class="form-control" placeholder="Enter product name">
+      <div *ngIf="product.invalid && product.touched"><small class="text-danger" *ngIf="product.errors?.['required']">Required</small></div>
+    </div>
+
+    <div class="mb-3">
+      <label for="quantity">Quantity</label>
+      <input id="quantity" required #quantity="ngModel" ngModel name="quantity" type="number" class="form-control" placeholder="Enter quantity">
+      <div *ngIf="quantity.invalid && quantity.touched"><small class="text-danger" *ngIf="quantity.errors?.['required']">Required</small></div>
+    </div>
+
+    <div class="form-group text-center mt-3">
+      <button class="btn btn-primary" type="submit" [disabled]="!orderForm.valid">Submit</button>
+    </div>
+  </form>
+
+  <div class="mt-5">
+    <h5>Order List</h5>
+    <table class="table table-bordered table-striped">
+      <thead class="table-dark">
+        <tr>
+          <th>Order ID</th>
+          <th>Customer Name</th>
+          <th>Product</th>
+          <th>Quantity</th>
+          <th>Edit</th>
+          <th>Delete</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let order of orderDetails">
+          <td>{{order.orderId}}</td>
+          <td>{{order.customerName}}</td>
+          <td>{{order.product}}</td>
+          <td>{{order.quantity}}</td>
+          <td><button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#exampleModal" (click)="edit(order)">Edit</button></td>
+          <td><button type="button" class="btn btn-danger" (click)="deleteOrder(order)">Delete</button></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Modal for Editing -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Update Order</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form #updateForm="ngForm" (ngSubmit)="updateOrder()">
+            <div class="mb-3">
+              <label for="customerName">Customer Name</label>
+              <input id="customerName" required #customerNameUpdate="ngModel" [(ngModel)]="orderToUpdate.customerName" name="customerName" type="text" class="form-control" placeholder="Enter customer name">
+              <div *ngIf="customerNameUpdate.invalid && customerNameUpdate.touched"><small class="text-danger" *ngIf="customerNameUpdate.errors?.['required']">Required</small></div>
+            </div>
+
+            <div class="mb-3">
+              <label for="product">Product</label>
+              <input id="product" required #productUpdate="ngModel" [(ngModel)]="orderToUpdate.product" name="product" type="text" class="form-control" placeholder="Enter product name">
+              <div *ngIf="productUpdate.invalid && productUpdate.touched"><small class="text-danger" *ngIf="productUpdate.errors?.['required']">Required</small></div>
+            </div>
+
+            <div class="mb-3">
+              <label for="quantity">Quantity</label>
+              <input id="quantity" required #quantityUpdate="ngModel" [(ngModel)]="orderToUpdate.quantity" name="quantity" type="number" class="form-control" placeholder="Enter quantity">
+              <div *ngIf="quantityUpdate.invalid && quantityUpdate.touched"><small class="text-danger" *ngIf="quantityUpdate.errors?.['required']">Required</small></div>
+            </div>
+
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-primary" [disabled]="!updateForm.valid">Save changes</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
